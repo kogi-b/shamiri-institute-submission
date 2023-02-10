@@ -3,10 +3,10 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from the .env file
+# Loading environment variables from the .env file
 load_dotenv()
 
-# Read the database connection details from the environment variables
+# Reading the database connection details from the environment variables
 db_name = os.getenv("DB_NAME")
 db_user = os.getenv("DB_USER")
 db_password = os.getenv("DB_PASSWORD")
@@ -46,7 +46,7 @@ def create_table(db_host, db_name, db_user, db_password):
         password=db_password
     )
 
-    # Create a cursor object
+    # Creating a cursor object
     cur_db = conn_db.cursor()
 
     create_script = ''' CREATE TABLE IF NOT EXISTS xyz (
@@ -59,10 +59,10 @@ def create_table(db_host, db_name, db_user, db_password):
                                                 isAdmin   boolean) '''
     cur_db.execute(create_script)
 
-    # Commit the changes
+    # Committing the changes
     conn_db.commit()
 
-    # Close the cursor and connection
+    # Closing the cursor and connection
     cur_db.close()
     conn_db.close()
 
@@ -75,25 +75,25 @@ def insert_data(db_host, db_name, db_user, db_password):
         password=db_password
     )
 
-    # Create a cursor object
+    # Creating a cursor object
     cur = conn.cursor()
 
-    # Load a sample DataFrame
+    # Loading the sample DataFrame
     df = pd.read_csv('MOCK_DATA.csv')
     df.dropna(inplace=True)
     df = df.astype({'id': 'int'})
     
-    # Iterate over the DataFrame rows and insert the data into the table
+    # Iterating over the DataFrame rows and insert the data into the table
     cols = ",".join([str(i) for i in df.columns.tolist()])
     for i, row in df.iterrows():
         sql = "INSERT INTO xyz (" + cols + \
             ") VALUES (" + "%s,"*(len(row)-1) + "%s)"
         cur.execute(sql, tuple(row))
 
-    # Commit the changes
+    # Committing the changes
     conn.commit()
 
-    # Close the cursor and connection
+    # Closing the cursor and connection
     cur.close()
     conn.close()
 
