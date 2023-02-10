@@ -49,7 +49,7 @@ def create_table(db_host, db_name, db_user, db_password):
     # Creating a cursor object
     cur_db = conn_db.cursor()
 
-    create_script = ''' CREATE TABLE IF NOT EXISTS xyz (
+    create_script = ''' CREATE TABLE IF NOT EXISTS mock_table (
                                                 id      integer ,
                                                 first_name    text,
                                                 last_name      text,
@@ -86,7 +86,7 @@ def insert_data(db_host, db_name, db_user, db_password):
     # Iterating over the DataFrame rows and insert the data into the table
     cols = ",".join([str(i) for i in df.columns.tolist()])
     for i, row in df.iterrows():
-        sql = "INSERT INTO xyz (" + cols + \
+        sql = "INSERT INTO mock_table (" + cols + \
             ") VALUES (" + "%s,"*(len(row)-1) + "%s)"
         cur.execute(sql, tuple(row))
 
